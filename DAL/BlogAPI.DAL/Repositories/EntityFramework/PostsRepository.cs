@@ -11,29 +11,51 @@ namespace BlogAPI.DAL.Repositories.EntityFramework
 {
     public class PostsRepository : IPostsRepository
     {
-        public Task<IEnumerable<ExpandoObject>> GetAll()
+        private readonly AppDbContext _dbContext;
+
+        public PostsRepository(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+
+        public async Task<IEnumerable<ExpandoObject>> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<Post> GetById(int id)
+        public async Task<Post> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _dbContext.Posts.FindAsync(id);
         }
 
-        public Task<bool> Create(Post entity)
+        public async Task<bool> Create(Post entity)
         {
-            throw new NotImplementedException();
+            await _dbContext.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return true;
         }
 
-        public Task<Post> Update(Post entity)
+        public async Task<Post> Update(Post entity)
         {
-            throw new NotImplementedException();
+            _dbContext.Posts.Update(entity);
+            await _dbContext.SaveChangesAsync();
+
+            return entity;
         }
 
-        public Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            throw new NotImplementedException();
+            var entityToDelete = await _dbContext.Posts.FindAsync(id);
+
+            if (entityToDelete != null)
+            {
+                _dbContext.Remove(entityToDelete);
+                await _dbContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }
