@@ -8,7 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Services\Abstract\" />
-    <Folder Include="Services\Implementations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DAL\BlogAPI.DAL\BlogAPI.DAL.csproj" />
+    <ProjectReference Include="..\..\Domain\BlogAPI.Domain\BlogAPI.Domain.csproj" />
   </ItemGroup>
 
 </Project>
